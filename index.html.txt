@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Movie Recommendation System</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* ---------------- BACKGROUND ---------------- */
+body {
+    min-height: 100vh;
+    background: url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba")
+        no-repeat center/cover;
+    color: #e5e7eb;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(2,6,23,0.85);
+    z-index: -1;
+}
+
+/* ---------------- PAGE 1 ---------------- */
+.page1 {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: rgba(17, 24, 39, 0.95);
+    padding: 25px;
+    border-radius: 18px;
+    width: 380px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+}
+
+select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: none;
+}
+
+select {
+    background: #020617;
+    color: #e5e7eb;
+}
+
+button {
+    background: #22c55e;
+    color: #022c22;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 18px;
+}
+
+button:hover {
+    background: #16a34a;
+}
+
+/* ---------------- MOVIE GRID ---------------- */
+.result {
+    margin-top: 25px;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.movie-card {
+    height: 180px;
+    border-radius: 15px;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+    font-weight: bold;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.6);
+}
+
+.movie-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+}
+
+.movie-card span {
+    position: relative;
+    z-index: 1;
+}
+
+/* ---------------- PAGE 2 ---------------- */
+.page2 {
+    display: none;
+    padding: 50px;
+}
+
+.details {
+    max-width: 900px;
+    margin: auto;
+    background: rgba(15,23,42,0.9);
+    padding: 40px;
+    border-radius: 20px;
+}
+
+.back-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    background: #22c55e;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= PAGE 1 ================= -->
+<div class="page1" id="page1">
+    <div class="card">
+        <h2>🎬 Movie Recommendation</h2>
+
+        <label>Time Duration</label>
+        <select>
+            <option>Less than 2 hours</option>
+            <option>2 - 3 hours</option>
+            <option>More than 3 hours</option>
+        </select>
+
+        <label>Language</label>
+        <select>
+            <option>English</option>
+            <option>Hindi</option>
+            <option>Tamil</option>
+            <option>Telugu</option>
+        </select>
+
+        <label>Subscription</label>
+        <select>
+            <option>Free</option>
+            <option>Premium</option>
+        </select>
+
+        <button onclick="showMovies()">Get Recommendation</button>
+
+        <div class="result" id="result"></div>
+    </div>
+</div>
+
+<!-- ================= PAGE 2 ================= -->
+<div class="page2" id="page2">
+    <div class="details">
+        <h1 id="movieTitle"></h1>
+        <p>Enjoy an immersive cinematic experience with stunning visuals and gripping storytelling.</p>
+        <button class="back-btn" onclick="goBack()">⬅ Back</button>
+    </div>
+</div>
+
+<script>
+const movies = [
+    { name: "The Empire", img: "https://via.placeholder.com/300x200?text=Empire" },
+    { name: "Toxic", img: "https://via.placeholder.com/300x200?text=Toxic" },
+    { name: "KGF", img: "https://via.placeholder.com/300x200?text=KGF" },
+    { name: "Love Dares", img: "https://via.placeholder.com/300x200?text=Love+Dares" },
+    { name: "Baahubali 2", img: "https://via.placeholder.com/300x200?text=Baahubali+2" },
+    { name: "Beyond Skyline", img: "https://via.placeholder.com/300x200?text=Beyond+Skyline" },
+    { name: "Thudarum", img: "https://via.placeholder.com/300x200?text=Thudarum" }
+];
+
+function showMovies() {
+    const result = document.getElementById("result");
+    result.innerHTML = `<div class="movie-grid">
+        ${movies.map(m => `
+            <div class="movie-card" style="background-image:url('${m.img}')" 
+                 onclick="openMovie('${m.name}')">
+                <span>${m.name}</span>
+            </div>`).join("")}
+    </div>`;
+}
+
+function openMovie(name) {
+    document.getElementById("page1").style.display = "none";
+    document.getElementById("page2").style.display = "block";
+    document.getElementById("movieTitle").innerText = name;
+}
+
+function goBack() {
+    document.getElementById("page2").style.display = "none";
+    document.getElementById("page1").style.display = "flex";
+}
+</script>
+
+</body>
+</html>
